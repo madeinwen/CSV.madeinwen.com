@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* Class-based dark mode so the header toggle overrides OS preference. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Minimal professional data-tool base. */
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Visible keyboard focus everywhere (a11y §28). */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
