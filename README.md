@@ -44,6 +44,40 @@ A sample dataset is included: `taiwan_bankruptcy_572.csv` (Taiwanese Bankruptcy 
 
 Svelte 5 + Vite + TypeScript + Tailwind CSS 4, PapaParse for CSV, ECharts for charts (code-split, loaded on demand).
 
+## Deploy to Cloudflare Pages
+
+Static site only — no server or SPA fallback rules needed (single `index.html`).
+
+### Option A — Dashboard (recommended)
+
+1. [Cloudflare dashboard](https://dash.cloudflare.com/) → **Workers & Pages** → **Create** → **Pages** → **Connect to Git** → select `madeinwen/CSV.madeinwen.com`.
+2. Build settings:
+   - Framework preset: **Vite**
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - (Environment variables → add `NODE_VERSION = 20`)
+3. **Save and Deploy**. You get `https://<project>.pages.dev`.
+4. Custom domain `CSV.madeinwen.com`: project → **Custom domains** → **Set up a custom domain** → enter `CSV.madeinwen.com` → Cloudflare adds the DNS record automatically (domain must be on Cloudflare).
+
+### Option B — Wrangler CLI
+
+```bash
+npm install -D wrangler
+npm run build
+npx wrangler pages project create csv-visualizer   # first time only
+npx wrangler pages deploy dist --project-name=csv-visualizer
+```
+
+Then bind the custom domain with:
+
+```bash
+npx wrangler pages domain add CSV.madeinwen.com --project-name=csv-visualizer
+```
+
+### Redeploys
+
+Pushes to `master` auto-deploy in production (Option A). Preview deployments are created for other branches / pull requests automatically.
+
 ## Notes for beta testers
 
 - Very large files (100k+ rows): the table paginates, but statistics/duplicate-scan sample the first 20,000 rows to stay responsive.
